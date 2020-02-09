@@ -44,6 +44,7 @@ docker run -p 80:80 -d --name myCon3 -v $(pwd):/usr/share/nginx/html nginx
   docker network create myNet
   docker container run --net myNet --name myCon6 -d alpine sleep 1000
   docker container run --net myNet -it --name myCon7 alpine sh
+  ping myCon4
 
 8. Docker-file
  a. Apache Spark
