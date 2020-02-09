@@ -1,0 +1,133 @@
+1. Docker Installation Verification
+  docker 
+  docker info
+  docker --version
+  
+2. Container Basics
+  docker container run -d --name myCon -p 8800:80 nginx
+  
+3. Inspect the container
+  docker container inspect myCon
+  docker container top mycon
+  docker container logs mycon
+  docker container stats mycon
+
+4. Management Commands
+  docker container ls
+  docker container stop myCon
+  docker container rm myCon
+  
+5. Terminal With container
+  docker container run -it --name myCon2 nginx bash
+  
+6. Mount-Bind
+  HTML CODE:
+  
+<!DOCTYPE html>
+<html>
+<head>
+<title>Learning Docker</title>
+</head>
+<body>
+<h1>This is my Custom Webpage</h1>
+<p>Change the index.html and see the changes reflect in docker container</p>
+</body>
+</html>
+  
+docker run -p 80:80 -d --name myCon3 -v $(pwd):/usr/share/nginx/html nginx
+
+7. Docker Networks
+  docker container run --name myCon4 -d alpine sleep 1000
+  docker container run -it --name myCon5 alpine sh
+  ping myCon4
+  
+  docker network create myNet
+  docker container run --net myNet --name myCon6 -d alpine sleep 1000
+  docker container run --net myNet -it --name myCon7 alpine sh
+
+8. Docker-file
+ a. Apache Spark
+ 
+FROM openjdk:8
+
+RUN apt update
+
+RUN apt install -y ffmpeg
+
+RUN apt-get update 
+
+RUN apt-get install nano
+
+RUN wget http://mirror.csclub.uwaterloo.ca/apache/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz
+
+RUN tar -xzf spark-2.4.4-bin-hadoop2.7.tgz && \
+    mv spark-2.4.4-bin-hadoop2.7 /spark && \
+    rm spark-2.4.4-bin-hadoop2.7.tgz
+
+ENV SPARK_HOME=/spark
+ENV PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+
+RUN mkdir code
+
+WORKDIR /code
+
+EXPOSE 4040
+
+EXPOSE 8080
+
+EXPOSE 8081
+
+
+b. FFMPEG
+
+FROM ubuntu:latest
+
+MAINTAINER Asif
+
+RUN apt update
+
+RUN apt install -y ffmpeg
+
+RUN mkdir VideoProcessing
+
+WORKDIR /VideoProcessing
+
+8. Docker Compose
+WordPress App
+
+version: '3.3'
+
+services:
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     volumes:
+       - wordpress_files:/var/www/html
+     ports:
+       - "80:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: my_wordpress_db_password
+
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: my_db_root_password
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: my_wordpress_db_password
+volumes:
+    wordpress_files:
+    db_data:
+  
+ 
+  
+
+  
+  
